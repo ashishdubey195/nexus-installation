@@ -70,3 +70,10 @@ sudo chkconfig --levels 345 nexus on
 10. Start service
 
 sudo service nexus start
+
+
+
+
+########### Getting intial passowrd for admin #########
+
+/opt/sonatype-work/nexus3/admin.password
