@@ -1,0 +1,60 @@
+To install Nexus Repository on a Unix server, you can follow these steps:
+
+1. Install java on the system
+
+sudo yum install java-1.8.0-amazon-corretto-devel
+
+2. Download the Unix archive for the latest version of Nexus Repository. As of the latest information provided, you can download version 3.74.0 from Nexus Repository Download Page.
+
+wget https://download.sonatype.com/nexus/3/nexus-3.74.0-05-unix.tar.gz
+
+3. Extract the downloaded archive using the following command:
+
+tar xvzf nexus-3.74.0-05-unix.tar.gz
+
+4. For a production installation, it's recommended to install Nexus in a directory like /usr/local. You can use these commands:
+
+sudo cp nexus-3.74.0-05-unix.tar.gz /usr/local
+cd /usr/local
+sudo tar xvzf nexus-3.74.0-05-unix.tar.gz
+ln -s nexus-3.74.0-05 nexus
+
+
+5. Create a dedicated user to run Nexus:
+
+sudo useradd nexus
+
+6. Configure Nexus to run as this user by editing the bin/nexus.rc file:
+
+run_as_user="nexus"
+
+7. To run Nexus as a service, you can use either init.d or systemd. For systemd, create a file called nexus.service in /etc/systemd/system/ with the following content:
+
+[Unit]
+Description=nexus service
+After=network.target
+
+[Service]
+Type=forking
+LimitNOFILE=65536
+ExecStart=/etc/init.d/nexus start
+ExecStop=/etc/init.d/nexus stop 
+User=nexus
+Restart=on-abort
+TimeoutSec=600
+
+[Install]
+WantedBy=multi-user.target
+
+8. Activate the service:
+
+sudo systemctl daemon-reload
+sudo systemctl enable nexus.service
+sudo systemctl start nexus.service
+
+9. Verify that the service started successfully:
+
+tail -f /opt/sonatype-work/nexus3/log/nexus.log
+
+These steps are based on the information from Run as a Service and Installation Methods.
+Remember to ensure that you have a suitable Java runtime environment installed before starting the installation process.
