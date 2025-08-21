@@ -23,6 +23,57 @@ tar -xvf nexus-3.65.0-02-unix.tar.gz
 sudo mv nexus-3.65.0-02 nexus
 
 5. Add nexus user (Prefer to set password for safety)
+[root@ip-172-31-46-35 ~]# cd /opt
+[root@ip-172-31-46-35 opt]# ls
+aws  containerd  nexus  nexus-3.65.0-02-unix.tar.gz  sonatype-work
+[root@ip-172-31-46-35 opt]# ll
+total 226428
+drwxr-xr-x.  4 root  root         33 Aug 13 21:08 aws
+drwx--x--x.  4 root  root         28 Aug 20 13:57 containerd
+drwxr-xr-x. 10 nexus nexus       181 Aug 21 15:58 nexus
+-rw-r--r--.  1 root  root  231860503 Feb  6  2024 nexus-3.65.0-02-unix.tar.gz
+drwxr-xr-x.  3 root  root         20 Aug 21 15:58 sonatype-work
+[root@ip-172-31-46-35 opt]# sudo adduser nexus
+adduser: user 'nexus' already exists
+[root@ip-172-31-46-35 opt]# sudo chown -R nexus:nexus /opt/nexus
+sudo chown -R nexus:nexus /opt/sonatype-work
+[root@ip-172-31-46-35 opt]# sudo vi /opt/nexus/bin/nexus.rc
+[root@ip-172-31-46-35 opt]# sudo vi /etc/systemd/system/nexus.service
+[root@ip-172-31-46-35 opt]# sudo vi /etc/systemd/system/nexus.service
+[root@ip-172-31-46-35 opt]#
+[root@ip-172-31-46-35 opt]# sudo systemctl start nexus
+Warning: The unit file, source configuration file or drop-ins of nexus.service changed on disk. Run 'systemctl daemon-reload' to reload units.
+[root@ip-172-31-46-35 opt]# sudo systemctl daemon-reload
+sudo systemctl enable nexus
+Synchronizing state of nexus.service with SysV service script with /usr/lib/systemd/systemd-sysv-install.
+Executing: /usr/lib/systemd/systemd-sysv-install enable nexus
+[root@ip-172-31-46-35 opt]# sudo systemctl start nexus
+[root@ip-172-31-46-35 opt]# sudo systemctl status nexus
+● nexus.service - nexus service
+     Loaded: loaded (/etc/systemd/system/nexus.service; enabled; preset: disabled)
+     Active: active (running) since Thu 2025-08-21 17:01:23 UTC; 45s ago
+   Main PID: 18555 (java)
+      Tasks: 59 (limit: 4656)
+     Memory: 1.9G
+        CPU: 1min 12.822s
+     CGroup: /system.slice/nexus.service
+             └─18555 /usr/lib/jvm/java-1.8.0-amazon-corretto.x86_64/jre/bin/java -server -Dinstall4j.jvmDir=/usr/lib/jvm/java-1.8.0-amazon-corretto.x86_64/jre -Dexe4j.moduleName=/opt/nexus/bi>
+
+Aug 21 17:01:23 ip-172-31-46-35.ec2.internal systemd[1]: Starting nexus.service - nexus service...
+Aug 21 17:01:23 ip-172-31-46-35.ec2.internal nexus[18373]: Starting nexus
+Aug 21 17:01:23 ip-172-31-46-35.ec2.internal systemd[1]: Started nexus.service - nexus service.
+
+[root@ip-172-31-46-35 opt]# sudo systemctl status nexus
+● nexus.service - nexus service
+     Loaded: loaded (/etc/systemd/system/nexus.service; enabled; preset: disabled)
+     Active: active (running) since Thu 2025-08-21 17:01:23 UTC; 4min 52s ago
+   Main PID: 18555 (java)
+      Tasks: 77 (limit: 4656)
+     Memory: 2.0G
+        CPU: 1min 36.345s
+     CGroup: /system.slice/nexus.service
+             └─18555 /usr/lib/jvm/java-1.8.0-amazon-corretto.x86_64/jre/bin/java -server -Dinstall4j.jvmDir=/usr/lib/jvm/java-1.8.0-amazon-corretto.x86_64/jre -Dexe4j.moduleName=/opt/nexus/bi>
+
 
 sudo adduser nexus
 
